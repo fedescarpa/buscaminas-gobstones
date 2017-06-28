@@ -1,143 +1,149 @@
-interactive program{
-    INIT -> { PrepararTablero() }
-	K_ARROW_LEFT
-		-> { MoverHacia(Oeste)}
-	K_ARROW_UP
-		-> { MoverHacia(Norte)}
-	K_ARROW_DOWN
-		-> { MoverHacia(Sur)}
-	K_ARROW_RIGHT
-		-> { MoverHacia(Este)}
-	K_SPACE -> { 
-		DestaparSiNoHayBandera()
-	}
-	K_ENTER 
-		-> {PonerOSacarBandera()
-				ActualizarContadorBanderasYVolver()
-				Gano()
-	} 
+interactive program {
+  INIT -> {
+    PrepararTablero()
+  }
+  K_ARROW_LEFT -> {
+    MoverHacia(Oeste)
+  }
+  K_ARROW_UP -> {
+    MoverHacia(Norte)
+  }
+  K_ARROW_DOWN -> {
+    MoverHacia(Sur)
+  }
+  K_ARROW_RIGHT -> {
+    MoverHacia(Este)
+  }
+  K_SPACE -> {
+    DestaparSiNoHayBandera()
+  }
+  K_ENTER -> {
+    PonerOSacarBandera()
+    ActualizarContadorBanderasYVolver()
+    Gano()
+  }
 }
 
 procedure PonerLinea(){
-		IrAlOrigen()
-		Mover(Norte)
-		Linea()
-		IrAlComienzo()
+  IrAlOrigen()
+  Mover(Norte)
+  Linea()
+  IrAlComienzo()
 }
 
 procedure Linea(){
-		while( puedeMover(Este)){
-		PonerN(2, Rojo)
-		Mover(Este)
-	}
-		PonerN(2, Rojo)
+  while( puedeMover(Este)){
+    PonerN(2, Rojo)
+    Mover(Este)
+  }
+  PonerN(2, Rojo)
 }
 
 
 procedure ActualizarContadorBanderasYVolver(){
-		Marcar()
-		ActualizarContadorBanderas()
-		IrAMarca()
-		SacarMarca()
+    Marcar()
+    ActualizarContadorBanderas()
+    IrAMarca()
+    SacarMarca()
 }
 
 
 procedure PonerOSacarBandera(){
-	if(hayBandera()){
-		SacarBandera()
-	} else {
-		PonerBandera()
-	}
+  if(hayBandera()){
+    SacarBandera()
+  } else {
+    PonerBandera()
+  }
 }
 
 procedure DestaparVecinas() {
-	MarcarTodas()
-	DestaparMarcadas()
+  MarcarTodas()
+  DestaparMarcadas()
 }
 
 procedure DestaparCelda(){
-	if(estaTapada()){
-		Sacar(Azul)
-	}
+  if(estaTapada()){
+    Sacar(Azul)
+  }
 }
 
 procedure TaparTablero(){
-	IrAlComienzo()
-	while(haySiguiente()){
-		TaparCelda()
-		IrAlSiguiente()
-	}
-	TaparCelda()
-	IrAlComienzo()
+  IrAlComienzo()
+  while(haySiguiente()){
+    TaparCelda()
+    IrAlSiguiente()
+  }
+  TaparCelda()
+  IrAlComienzo()
 }
 procedure PonerPista(){
-	if (not hayMina()){
-		PonerN(cantMinasCercanas(), Verde)
-	}
+  if (not hayMina()){
+    PonerN(cantMinasCercanas(), Verde)
+  }
 }
 
 procedure PonerTodasLasPistas(){
-	while(haySiguiente()){
-		PonerPista()
-		IrAlSiguiente()
-	}
-	PonerPista()
-	IrAlComienzo()
+  while(haySiguiente()){
+    PonerPista()
+    IrAlSiguiente()
+  }
+  PonerPista()
+  IrAlComienzo()
 }
 
 procedure PrepararTablero(){
-	TaparTablero()
-	PonerTodasLasPistas()
-	ActualizarContadores()
+  TaparTablero()
+  PonerTodasLasPistas()
+  ActualizarContadores()
 }
 
 procedure ActualizarContadores(){
-	ActualizarContadorBanderas()
-	ActualizarContadorMinas()
-	IrAlComienzo()
+  ActualizarContadorBanderas()
+  ActualizarContadorMinas()
+  IrAlComienzo()
 }
 
 procedure DestaparMarcada() {
-	if (hayMarca() && not esPrimeraMarca()){
-		SacarMarca()
-		DestaparCelda()
-	}
+  if (hayMarca() && not esPrimeraMarca()){
+    SacarMarca()
+    DestaparCelda()
+  }
 }
 
 procedure DestaparMarcadas() {
-	while(haySiguiente()){
-		DestaparMarcada()
-		IrAlSiguiente()
-	}
-	DestaparMarcada()
-	IrAPrimeraMarca()
-	SacarTodas(Rojo)
+  while(haySiguiente()){
+    DestaparMarcada()
+    IrAlSiguiente()
+  }
+  DestaparMarcada()
+  IrAPrimeraMarca()
+  SacarTodas(Rojo)
 }
 
 procedure Gano(){
-	if(totalMinasConBandera() == totalMinas()){
-	DestaparTodas()
-	}
+  if(totalMinasConBandera() == totalMinas()){
+  DestaparTodas()
+  }
 }
 
 procedure DestaparSiNoHayBandera(){
-	if (not hayBandera() && not hayMina()){
-		DestaparCelda()
-		DestaparVecinas()
-	}
+  if (not hayBandera() && not hayMina()){
+    DestaparCelda()
+    DestaparVecinas()
+  }
 
-	if (hayMina()) {
-		DestaparTodas()
-	}
+  if (hayMina()) {
+    DestaparTodas()
+  }
 }
 
 procedure SacarBanderasIncorrectas(){
-	IrAlComienzo()
-	while(haySiguiente()){
-		if(hayBandera() && not hayMina()){
-			SacarBandera()	
-		}
-		IrAlSiguiente()
-	}
+  IrAlComienzo()
+  while(haySiguiente()){
+    if(hayBandera() && not hayMina()){
+      SacarBandera()
+    }
+    IrAlSiguiente()
+  }
 }
 
