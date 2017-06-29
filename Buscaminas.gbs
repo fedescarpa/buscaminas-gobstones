@@ -19,8 +19,6 @@ interactive program {
   }
   K_ENTER -> {
     PonerOSacarBandera()
-    ActualizarContadorBanderasYVolver()
-    Gano()
   }
 }
 
@@ -54,6 +52,8 @@ procedure PonerOSacarBandera(){
   } else {
     PonerBandera()
   }
+  ActualizarContadorBanderasYVolver()
+  Gano()
 }
 
 procedure DestaparVecinas() {
